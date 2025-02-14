@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -78,10 +78,21 @@ export default function BirthdayCelibrat() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Play Music
+  const playMusic = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
   // Function to start celebration
   const celebrate = () => {
     setCelebrating(true);
     setShowConfetti(true);
+
     const interval = setInterval(() => {
       setCandlesLit((prev) => {
         if (prev < totalCandles) return prev + 1;
@@ -90,12 +101,17 @@ export default function BirthdayCelibrat() {
       });
     }, 500);
 
-    // Stop confetti after 10 seconds
+    // Stop confetti after 30 seconds
     setTimeout(() => {
       setShowConfetti(false);
-    }, 10000); // 10 seconds
+    }, 30000); // 30 seconds
 
   };
+
+  const celebratePlayMusic = () => {
+    playMusic();
+    celebrate();
+  }
 
   // Dummy confetti colors
   const confettiColors = ["#ff0", "#f0f", "#0ff", "#f00", "#00f"];
@@ -112,7 +128,7 @@ export default function BirthdayCelibrat() {
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-purple-200 via-pink-300 to-blue-200">
           <Card className="p-4 bg-white shadow-lg rounded-lg">
             <CardHeader>
-              <CardTitle>Generate Birthday Card</CardTitle>
+              <CardTitle>Enter your Name and See Magic</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -131,14 +147,14 @@ export default function BirthdayCelibrat() {
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-gray-700">
-                    Message
+                    Age
                   </label>
                   <Input
                     id="message"
-                    type="text"
+                    type="number"
                     value={userMessage}
                     onChange={(e) => setUserMessage(e.target.value)}
-                    placeholder="Enter your Message"
+                    placeholder="Enter your Age"
                     required
                   />
                 </div>
@@ -146,7 +162,7 @@ export default function BirthdayCelibrat() {
                   type="submit"
                   className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 transition-all duration-300"
                 >
-                  Generate Card
+                  Next
                 </Button>
               </form>
             </CardContent>
@@ -165,12 +181,13 @@ export default function BirthdayCelibrat() {
                 <CardTitle className="text-5xl font-bold text-purple-600">
                   HAPPY BIRTHDAY
                 </CardTitle>
-                <CardDescription className="text-2xl mt-4 text-pink-600 "><h1>{userName && userName }</h1> </CardDescription>
+                <br />
+                <CardDescription className="text-3xl mt-4 text-pink-600 "><h1>{userName && userName}</h1> </CardDescription>
               </CardHeader>
               <CardContent>
                 <div>
                   <p className="text-lg text-center text-purple-700">
-                    {userMessage && userMessage}
+                    Happy Birthday, {userName && userName}! 🎉🎂 Wishing you endless joy, success, and laughter as you turn {userMessage && userMessage} today! 🥳🎁 Stay amazing! 💖✨
                   </p>
                   <h3 className="text-lg font-semibold text-black mb-2 text-center mt-6">
                     Light the candles:
@@ -179,7 +196,7 @@ export default function BirthdayCelibrat() {
                     {[...Array(totalCandles)].map((_, index) => (
                       <AnimatePresence key={index}>
                         {(celebrating && index <= candlesLit) ||
-                        (!celebrating && index < candlesLit) ? (
+                          (!celebrating && index < candlesLit) ? (
                           <motion.div
                             initial={{ scale: 0 }} // Start with a scale of 0 (invisible)
                             animate={{ scale: 1 }} // Animate to scale 1 (visible)
@@ -235,11 +252,12 @@ export default function BirthdayCelibrat() {
               </CardContent>
               <CardFooter className="text-center">
                 <Button
-                  onClick={celebrate}
+                  onClick={celebratePlayMusic}
                   className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 transition-all duration-300"
                 >
                   Celebrate! <FaGift className="ml-2 h-4 w-4" />
                 </Button>
+                <audio ref={audioRef} src="/sound/song.mp3" preload="auto" />
               </CardFooter>
             </Card>
             {showConfetti && <DynamicConfetti width={windowSize.width} height={windowSize.height} colors={confettiColors} />}
