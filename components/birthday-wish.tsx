@@ -101,10 +101,10 @@ export default function BirthdayCelibrat() {
       });
     }, 500);
 
-    // Stop confetti after 30 seconds
+    // Stop confetti after 60 seconds
     setTimeout(() => {
       setShowConfetti(false);
-    }, 30000); // 30 seconds
+    }, 60000); // 60 seconds
 
   };
 
