@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import { FaBirthdayCake, FaGift } from "react-icons/fa";
+import { FaBirthdayCake } from "react-icons/fa";
 import { GiBalloons } from "react-icons/gi";
 import { Input } from "@/components/ui/input";
 
@@ -108,10 +108,10 @@ export default function BirthdayCelibrat() {
 
   };
 
-  const celebratePlayMusic = () => {
-    playMusic();
-    celebrate();
-  }
+  // const celebratePlayMusic = () => {
+  //   playMusic();
+  //   celebrate();
+  // }
 
   // Dummy confetti colors
   const confettiColors = ["#ff0", "#f0f", "#0ff", "#f00", "#00f"];
@@ -159,6 +159,7 @@ export default function BirthdayCelibrat() {
                   />
                 </div>
                 <Button
+                  onClick={celebrate}
                   type="submit"
                   className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 transition-all duration-300"
                 >
@@ -252,10 +253,10 @@ export default function BirthdayCelibrat() {
               </CardContent>
               <CardFooter className="text-center">
                 <Button
-                  onClick={celebratePlayMusic}
+                  onClick={playMusic}
                   className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 text-white hover:opacity-90 transition-all duration-300"
                 >
-                  Celebrate! <FaGift className="ml-2 h-4 w-4" />
+                  Play Music
                 </Button>
                 <audio ref={audioRef} src="/sound/song.mp3" preload="auto" />
               </CardFooter>
